@@ -1,0 +1,152 @@
+\newcommand{\etalchar}[1]{$^{#1}$}
+\begin{thebibliography}{DWU{\etalchar{+}}16}
+
+\bibitem[ASB16]{arjovsky2016unitary}
+Martin Arjovsky, Amar Shah, and Yoshua Bengio.
+\newblock Unitary evolution recurrent neural networks.
+\newblock In {\em International Conference on Machine Learning}, pages
+  1120--1128, 2016.
+
+\bibitem[BS01]{bulow2001hypercomplex}
+Thomas Bulow and Gerald Sommer.
+\newblock Hypercomplex signals-a novel extension of the analytic signal to the
+  multidimensional case.
+\newblock {\em IEEE Transactions on signal processing}, 49(11):2844--2852,
+  2001.
+
+\bibitem[B{\"u}l99]{bulow1999hypercomplex}
+Thomas B{\"u}low.
+\newblock {\em Hypercomplex spectral signal representations for the processing
+  and analysis of images}.
+\newblock Universit{\"a}t Kiel. Institut f{\"u}r Informatik und Praktische
+  Mathematik, 1999.
+
+\bibitem[Cho16]{chollet2016xception}
+Fran{\c{c}}ois Chollet.
+\newblock Xception: Deep learning with depthwise separable convolutions.
+\newblock {\em arXiv preprint arXiv:1610.02357}, 2016.
+
+\bibitem[CUH15]{clevert2015fast}
+Djork-Arn{\'e} Clevert, Thomas Unterthiner, and Sepp Hochreiter.
+\newblock Fast and accurate deep network learning by exponential linear units
+  (elus).
+\newblock {\em arXiv preprint arXiv:1511.07289}, 2015.
+
+\bibitem[DWU{\etalchar{+}}16]{danihelka2016associative}
+Ivo Danihelka, Greg Wayne, Benigno Uria, Nal Kalchbrenner, and Alex Graves.
+\newblock Associative long short-term memory.
+\newblock {\em arXiv preprint arXiv:1602.03032}, 2016.
+
+\bibitem[GB10]{glorot2010understanding}
+Xavier Glorot and Yoshua Bengio.
+\newblock Understanding the difficulty of training deep feedforward neural
+  networks.
+\newblock In {\em Proceedings of the Thirteenth International Conference on
+  Artificial Intelligence and Statistics}, pages 249--256, 2010.
+
+\bibitem[Hoc91]{hochreiter1991untersuchungen}
+Sepp Hochreiter.
+\newblock Untersuchungen zu dynamischen neuronalen netzen.
+\newblock {\em Diploma, Technische Universit{\"a}t M{\"u}nchen}, 91, 1991.
+
+\bibitem[HZRS15]{he2015delving}
+Kaiming He, Xiangyu Zhang, Shaoqing Ren, and Jian Sun.
+\newblock Delving deep into rectifiers: Surpassing human-level performance on
+  imagenet classification.
+\newblock In {\em Proceedings of the IEEE international conference on computer
+  vision}, pages 1026--1034, 2015.
+
+\bibitem[HZRS16]{he2016deep}
+Kaiming He, Xiangyu Zhang, Shaoqing Ren, and Jian Sun.
+\newblock Deep residual learning for image recognition.
+\newblock In {\em Proceedings of the IEEE conference on computer vision and
+  pattern recognition}, pages 770--778, 2016.
+
+\bibitem[IS15]{ioffe2015batch}
+Sergey Ioffe and Christian Szegedy.
+\newblock Batch normalization: Accelerating deep network training by reducing
+  internal covariate shift.
+\newblock In {\em International Conference on Machine Learning}, pages
+  448--456, 2015.
+
+\bibitem[KGC15]{kendall2015posenet}
+Alex Kendall, Matthew Grimes, and Roberto Cipolla.
+\newblock Posenet: A convolutional network for real-time 6-dof camera
+  relocalization.
+\newblock In {\em Proceedings of the IEEE international conference on computer
+  vision}, pages 2938--2946, 2015.
+
+\bibitem[KLS17]{kessy2017optimal}
+Agnan Kessy, Alex Lewin, and Korbinian Strimmer.
+\newblock Optimal whitening and decorrelation.
+\newblock {\em The American Statistician}, (just-accepted), 2017.
+
+\bibitem[MINM17]{minemoto2017feed}
+Toshifumi Minemoto, Teijiro Isokawa, Haruhiko Nishimura, and Nobuyuki Matsui.
+\newblock Feed forward neural network with random quaternionic neurons.
+\newblock {\em Signal Processing}, 136:59--68, 2017.
+
+\bibitem[Nes]{nesterov1983method}
+Yurii Nesterov.
+\newblock A method of solving a convex programming problem with convergence
+  rate o (1/k2).
+
+\bibitem[NH10]{nair2010rectified}
+Vinod Nair and Geoffrey~E Hinton.
+\newblock Rectified linear units improve restricted boltzmann machines.
+\newblock In {\em Proceedings of the 27th international conference on machine
+  learning (ICML-10)}, pages 807--814, 2010.
+
+\bibitem[OL81]{oppenheim1981importance}
+Alan~V Oppenheim and Jae~S Lim.
+\newblock The importance of phase in signals.
+\newblock {\em Proceedings of the IEEE}, 69(5):529--541, 1981.
+
+\bibitem[PMB{\etalchar{+}}16]{parcollet2016quaternion}
+Titouan Parcollet, Mohamed Morchid, Pierre-Michel Bousquet, Richard Dufour,
+  Georges Linar{\`e}s, and Renato De~Mori.
+\newblock Quaternion neural networks for spoken language understanding.
+\newblock In {\em Spoken Language Technology Workshop (SLT), 2016 IEEE}, pages
+  362--368. IEEE, 2016.
+
+\bibitem[PT02]{turner2002}
+Robert Piziak and Danny Turner.
+\newblock The polar form of a quaternion.
+\newblock 2002.
+
+\bibitem[Ris06]{rishiyur2006neural}
+Adityan Rishiyur.
+\newblock Neural networks with complex and quaternion inputs.
+\newblock {\em arXiv preprint cs/0607090}, 2006.
+
+\bibitem[SE00]{sangwine2000colour}
+Stephen~J Sangwine and Todd~A Ell.
+\newblock Colour image filters based on hypercomplex convolution.
+\newblock {\em IEE Proceedings-Vision, Image and Signal Processing},
+  147(2):89--93, 2000.
+
+\bibitem[SF07]{shi2007quaternion}
+Lilong Shi and Brian Funt.
+\newblock Quaternion color texture segmentation.
+\newblock {\em Computer Vision and image understanding}, 107(1):88--96, 2007.
+
+\bibitem[SGS15]{srivastava2015training}
+Rupesh~K Srivastava, Klaus Greff, and J{\"u}rgen Schmidhuber.
+\newblock Training very deep networks.
+\newblock In {\em Advances in neural information processing systems}, pages
+  2377--2385, 2015.
+
+\bibitem[TBS{\etalchar{+}}17]{trabelsi2017deep}
+Chiheb Trabelsi, Olexa Bilaniuk, Dmitriy Serdyuk, Sandeep Subramanian,
+  Jo{\~a}o~Felipe Santos, Soroush Mehri, Negar Rostamzadeh, Yoshua Bengio, and
+  Christopher~J Pal.
+\newblock Deep complex networks.
+\newblock {\em arXiv preprint arXiv:1705.09792}, 2017.
+
+\bibitem[WPH{\etalchar{+}}16]{wisdom2016full}
+Scott Wisdom, Thomas Powers, John Hershey, Jonathan Le~Roux, and Les Atlas.
+\newblock Full-capacity unitary recurrent neural networks.
+\newblock In {\em Advances in Neural Information Processing Systems}, pages
+  4880--4888, 2016.
+
+\end{thebibliography}

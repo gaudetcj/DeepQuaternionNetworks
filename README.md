@@ -1,2 +1,2 @@
 # DeepQuaternionNetworks
-Code for Deep Quaternion Networks
+Paper and code for the paper Deep Quaternion Networks

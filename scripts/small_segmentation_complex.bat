@@ -1,0 +1,1 @@
+python ../runner.py "segmentation" --mode "complex" -sf 16 -init "complex_independent"
