@@ -7,9 +7,15 @@ Please feel free to email me with questions about using the code. I will be maki
 
 
 If using this code or work presented in the paper please cite
+
 @article{gaudet2017deep,
+
   title={Deep Quaternion Networks},
+  
   author={Gaudet, Chase and Maida, Anthony},
+  
   journal={arXiv preprint arXiv:1712.04604},
+  
   year={2017}
+  
 }
