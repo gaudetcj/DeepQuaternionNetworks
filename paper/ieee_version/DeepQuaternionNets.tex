@@ -283,16 +283,16 @@ The scaling parameter {\boldmath$\gamma$} is a symmetric matrix of size matching
 =
 \left( 
 \begin{array}{cccc}
-V_{rr} & V_{ri} & V_{rj} & V_{rk} \\
-V_{ri} & V_{ii} & V_{ij} & V_{ik} \\
-V_{rj} & V_{ij} & V_{jj} & V_{jk} \\
-V_{rk} & V_{ik} & V_{jk} & V_{kk}
+\gamma_{rr} & \gamma_{ri} & \gamma_{rj} & \gamma_{rk} \\
+\gamma_{ri} & \gamma_{ii} & \gamma_{ij} & \gamma_{ik} \\
+\gamma_{rj} & \gamma_{ij} & \gamma_{jj} & \gamma_{jk} \\
+\gamma_{rk} & \gamma_{ik} & \gamma_{jk} & \gamma_{kk}
 \end{array}
 \right)
 \label{eq:gamma}
 \end{equation}
 Because of its symmetry it has only ten learnable parameters. 
-The variance of the components of input $\tilde{\textbf{x}}$ are variance 1 so the diagonal of {\boldmath$\gamma$} is initialized to $1/\sqrt{16}$ in order to obtain a modulus of 1 for the variance of the normalized value. 
+The variance of the components of input $\tilde{\textbf{x}}$ are variance 1 so the diagonal of {\boldmath$\gamma$} is initialized to $1/\sqrt{4}$ in order to obtain a modulus of 1 for the variance of the normalized value. 
 The off diagonal terms of {\boldmath$\gamma$} and all components of {\boldmath$\beta$} are initialized to 0.
 The quaternion batch normalization is defined as:
 \begin{equation}
@@ -308,7 +308,7 @@ In this work we derive our quaternion weight initialization using the same proce
 To begin we find the variance of a quaternion weight:
 \begin{align}
 W = &~|W|e^{(\mbox{cos}\phi_1 \textit{i} + \mbox{cos}\phi_2 \textit{j} + \mbox{cos}\phi_3 \textit{k})\theta} \nonumber \\
-= &~\mathscr{R}\{W\} + \mathscr{I}\{W\} + \mathscr{J}\{W\} + \mathscr{K}\{W\}.
+= &~\mathscr{R}\{W\} + i~\mathscr{I}\{W\} + j~\mathscr{J}\{W\} + k~\mathscr{K}\{W\}.
 \label{eq:quaternion_weight}
 \end{align}
 where $|W|$ is the magnitude, $\theta$ and $\phi$ are angle arguments, and $\mbox{cos}^2\phi_1 + \mbox{cos}^2\phi_2 + \mbox{cos}^2\phi_3 = 1$ \cite{turner2002}.
@@ -435,7 +435,7 @@ Let $L$ be a real valued loss function and $q$ be a quaternion variable such tha
 \begin{align}
 \nabla_L(q) &= \frac{\partial L}{\partial q} = \frac{\partial L}{\partial a} + \textit{i}~\frac{\partial L}{\partial b} + \textit{j}~\frac{\partial L}{\partial c} + \textit{k}~\frac{\partial L}{\partial d} \\ \nonumber
 &= \frac{\partial L}{\partial \mathbb{R}(q)} + \textit{i}~\frac{\partial L}{\partial \mathbb{I}(q)} + \textit{j}~\frac{\partial L}{\partial \mathbb{J}(q)} + \textit{k}~\frac{\partial L}{\partial \mathbb{K}(q)} \\ \nonumber
-&= \mathbb{R}(\nabla_L(q)) + \mathbb{I}(\nabla_L(q)) + \mathbb{J}(\nabla_L(q)) + \mathbb{K}(\nabla_L(q)) 
+&= \mathbb{R}(\nabla_L(q)) + i~\mathbb{I}(\nabla_L(q)) + j~\mathbb{J}(\nabla_L(q)) + k~\mathbb{K}(\nabla_L(q)) 
 \label{eq:diff1}
 \end{align}
 Now let $g = m+\textit{i}~n+\textit{j}~o+\textit{k}~p$ be another quaternion variable where $q$ can be expressed in terms of $g$ and $m,n,o,p \in \mathbb{R}$ we then have,
