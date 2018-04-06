@@ -1,2 +1,4 @@
 *.png
 *.pyc
+*.cpython
+*/_pycache_/*

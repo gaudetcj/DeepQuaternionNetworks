@@ -1,3 +1,6 @@
+# This file is used to run the CIFAR and KITTI experiments easily with different hyper paramters
+# Note that the MNIST experiment has its own runner since no hyper parameter exploration was used
+
 from training_classification import train as train_c
 from training_classification import getModel as model_c
 from training_segmentation import train as train_s

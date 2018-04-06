@@ -322,7 +322,7 @@ but since $W$ is symmetric around 0 the term $(\mathbb{E}[W])^2$ is 0.
 We do not have a way to calculate $\mbox{Var}(W) = \mathbb{E}[|W|^2]$ so we make use of the magnitude of quaternion normal values $|W|$, which follows an independent normal distribution with four degrees of freedom (DOFs).
 We can then calculate the expected value of $|W|^2$ to find our variance
 \begin{equation}
-\mathbb{E}[|W|^2] = \int_\infty^\infty x^2 f(x) ~dx = 4\sigma^2
+\mathbb{E}[|W|^2] = \int_{-\infty}^\infty x^2 f(x) ~dx = 4\sigma^2
 \label{eq:expected}
 \end{equation}
 where $f(x)$ is the four DOF distribution given in the Appendix.
@@ -348,20 +348,16 @@ Our experiments covered image classification using both the CIFAR-10 and CIFAR-1
 \subsection{Classification}
 We use the same architecture as the large model in \cite{trabelsi2017deep}, which is a 110 layer Residual model similar to the one in \cite{he2016deep}.
 There is one difference between the real-valued network and the ones used for both the complex and hyper-complex valued networks.
-Because the datasets are all real-valued the network must learn the imaginary or quaternion components.
+Because the datasets are all real-valued, the network must learn the imaginary or quaternion components.
 We use the same technique as \cite{trabelsi2017deep} where there is an additional block immediately after the input which will learn the hyper-complex components
 \begin{equation*}
 BN \rightarrow ReLU \rightarrow Conv \rightarrow BN \rightarrow ReLU \rightarrow Conv.
 \end{equation*}
+One of these blocks exist per imaginary component and are concatenated with the original input image.
+Another possible choice if using color images is to use the gray scale image as the real axis and then use the red, green, and blue channels as the $i, j,$ and $k$ axis respectively.
+With this choice it is not necessary to use the above block after input to learn the imaginary components.
 
-Since all datasets that we work with are real-valued,
-we present a way to learn their imaginary components to let the rest of the network operate in the
-complex plane. 
-We learn the initial imaginary component of our input by performing the operations
-present within a single real-valued residual block
-
-This means that to maintain the same approximate parameter count the number of convolution kernels for the complex network was increased.
-We however did not increase the number of convolution kernels for the quaternion trials so any increase in model performance comes from the quaternion filters and at a lower hardware budget.
+To maintain the same parameter budget among the three network types we divided the number of filters per layer of the real network by a factor of two for the complex, and by a factor of four for the quaternion.
 
 The architecture consists of 3 stages of repeating residual blocks where at the end of each stage the images are downsized by strided convolutions.
 Each stage also doubles the previous stage's number of convolution kernels.

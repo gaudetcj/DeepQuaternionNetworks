@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6500) (preloaded format=pdflatex 2018.1.27)  26 MAR 2018 13:30
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6500) (preloaded format=pdflatex 2018.1.27)  6 APR 2018 11:47
 entering extended mode
 **./DeepQuaternionNets.tex
 (DeepQuaternionNets.tex
@@ -457,7 +457,7 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 [5] (DeepQuaternionNets.bbl)
-Overfull \hbox (11.75749pt too wide) detected at line 440
+Overfull \hbox (11.75749pt too wide) detected at line 436
 []
  []
 
@@ -468,12 +468,12 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
-Underfull \hbox (badness 7116) in paragraph at lines 513--516
+Underfull \hbox (badness 7116) in paragraph at lines 509--512
 \OT1/ptm/m/n/10 Let $[]$ be the length of $[]$, which means $[] \OT1/cmr/m/n/10 =
  []
 
 
-Overfull \hbox (31.63963pt too wide) detected at line 530
+Overfull \hbox (31.63963pt too wide) detected at line 526
 []
  []
 
@@ -512,7 +512,7 @@ X 2.9/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Program Files (x86)/MiKTeX 2.
 bm10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/rsfs/rsfs10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/
 type1/urw/times/utmb8a.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/urw/times/utmbi8a.pfb><C:/Program Files (x86)/
 MiKTeX 2.9/fonts/type1/urw/times/utmr8a.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/urw/times/utmri8a.pfb>
-Output written on DeepQuaternionNets.pdf (8 pages, 355466 bytes).
+Output written on DeepQuaternionNets.pdf (8 pages, 355522 bytes).
 PDF statistics:
  105 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
