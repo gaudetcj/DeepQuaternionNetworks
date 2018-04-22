@@ -11,8 +11,9 @@ import sys; sys.path.append('.')
 from keras import backend as K
 from keras import activations, initializers, regularizers, constraints
 from keras.layers import Layer, InputSpec
+from .init import QuaternionInit
 import numpy as np
-from theano.sandbox.rng_mrg import MRG_RandomStreams as RandomStreams
+import tensorflow as tf
 
 
 class ComplexDense(Layer):
@@ -279,7 +280,7 @@ class QuaternionDense(Layer):
                  activation=None,
                  use_bias=True,
                  init_criterion='he',
-                 kernel_initializer='complex',
+                 kernel_initializer='quaternion',
                  bias_initializer='zeros',
                  kernel_regularizer=None,
                  bias_regularizer=None,
@@ -295,7 +296,7 @@ class QuaternionDense(Layer):
         self.activation = activations.get(activation)
         self.use_bias = use_bias
         self.init_criterion = init_criterion
-        if kernel_initializer in {'complex'}:
+        if kernel_initializer in {'quaternion'}:
             self.kernel_initializer = kernel_initializer
         else:
             self.kernel_initializer = initializers.get(kernel_initializer)
@@ -323,10 +324,9 @@ class QuaternionDense(Layer):
             data_format=data_format
         )
         if self.init_criterion == 'he':
-            s = K.sqrt(1. / fan_in)
+            s = tf.sqrt(tf.cast(1. / fan_in, tf.float32))
         elif self.init_criterion == 'glorot':
-            s = K.sqrt(1. / (fan_in + fan_out))
-        rng = RandomStreams(seed=self.seed)
+            s = tf.sqrt(tf.cast(1. / (fan_in + fan_out), tf.float32))
 
         # Equivalent initialization using amplitude phase representation:
         """modulus = rng.rayleigh(scale=s, size=kernel_shape)
@@ -338,34 +338,38 @@ class QuaternionDense(Layer):
 
         # Initialization using euclidean representation:
         def init_w_r(shape, dtype=None):
-            return rng.normal(
-                size=kernel_shape,
-                avg=0,
-                std=s,
-                dtype=dtype
+            return K.random_normal_variable(
+                kernel_shape,
+                mean=0,
+                scale=s,
+                dtype=tf.float32,
+                seed=self.seed
             )
         def init_w_i(shape, dtype=None):
-            return rng.normal(
-                size=kernel_shape,
-                avg=0,
-                std=s,
-                dtype=dtype
+            return K.random_normal_variable(
+                kernel_shape,
+                mean=0,
+                scale=s,
+                dtype=tf.float32,
+                seed=self.seed
             )
         def init_w_j(shape, dtype=None):
-            return rng.normal(
-                size=kernel_shape,
-                avg=0,
-                std=s,
-                dtype=dtype
+            return K.random_normal_variable(
+                kernel_shape,
+                mean=0,
+                scale=s,
+                dtype=tf.float32,
+                seed=self.seed
             )
         def init_w_k(shape, dtype=None):
-            return rng.normal(
-                size=kernel_shape,
-                avg=0,
-                std=s,
-                dtype=dtype
+            return K.random_normal_variable(
+                kernel_shape,
+                mean=0,
+                scale=s,
+                dtype=tf.float32,
+                seed=self.seed
             )
-        if self.kernel_initializer in {'complex'}:
+        if self.kernel_initializer in {'quaternion'}:
             r_init = init_w_r
             i_init = init_w_i
             j_init = init_w_j
