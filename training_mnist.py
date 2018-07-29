@@ -10,7 +10,7 @@ from quaternion_layers.bn import QuaternionBatchNormalization
 from keras.preprocessing.image import ImageDataGenerator
 from keras import backend as K
 
-batch_size = 128
+batch_size = 16
 num_classes = 10
 epochs = 1200
 
@@ -76,7 +76,7 @@ O = Dense(num_classes, activation='softmax')(O)
 
 model = Model(R, O)
 model.compile(loss=keras.losses.categorical_crossentropy,
-              optimizer=keras.optimizers.Adadelta(),
+              optimizer=keras.optimizers.Adam(),
               metrics=['accuracy'])
 
 hist = model.fit_generator(datagen.flow(x_train, y_train, batch_size=batch_size),

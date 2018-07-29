@@ -34,9 +34,9 @@ The field of deep learning has seen significant advancement in recent years.
 However, much of the existing work has been focused on real-valued numbers.
 Recent work has shown that a deep learning system using the complex numbers can be deeper for a fixed parameter budget compared to its real-valued counterpart.
 In this work, we explore the benefits of generalizing one step further into the hyper-complex numbers, quaternions specifically, and provide the architecture components needed to build deep quaternion networks.
-We go over quaternion convolutions, present a quaternion weight initialization scheme, and present algorithms for quaternion batch-normalization.
+We develop the theoretical basis by reviewing quaternion convolutions, developing a novel quaternion weight initialization scheme, and developing novel algorithms for quaternion batch-normalization.
 These pieces are tested in a classification model by end-to-end training on the CIFAR-10 and CIFAR-100 data sets and a segmentation model by end-to-end training on the KITTI Road Segmentation data set. 
-The quaternion networks show improved convergence compared to real-valued and complex-valued networks, especially on the segmentation task.
+These quaternion networks show improved convergence compared to real-valued and complex-valued networks, especially on the segmentation task, while having fewer parameters.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -173,14 +173,14 @@ As the complex chain rule is shown in \cite{trabelsi2017deep}, we provide the qu
 
 
 \subsection{Quaternion Convolution}\label{s:qc}
-Convolution in the quaternion domain is done by convolving a quaternion filter matrix $\textbf{W}=\textbf{A}+\textit{i}\textbf{B}+\textit{j}\textbf{C}+\textit{k}\textbf{D}$ by a quaternion vector $\textbf{h}=\textbf{w}+\textit{i}\textbf{x}+\textit{j}\textbf{y}+\textit{k}\textbf{z}$. 
+Convolution in the quaternion domain is done by convolving a quaternion filter matrix $\textbf{W}=\textbf{A}+\textit{i}~\textbf{B}+\textit{j}~\textbf{C}+\textit{k}~\textbf{D}$ by a quaternion vector $\textbf{h}=\textbf{w}+\textit{i}~\textbf{x}+\textit{j}~\textbf{y}+\textit{k}~\textbf{z}$.
+Here $\textbf{A}$, $\textbf{B}$, $\textbf{C}$, and $\textbf{D}$ are real-valued matrices and $\textbf{w}$, $\textbf{x}$, $\textbf{y}$, and $\textbf{z}$ are real-valued vectors.
 Performing the convolution by using the distributive property and grouping terms one gets
 \begin{align}
 \textbf{W}\ast \textbf{h} = &~(\textbf{A}\ast\textbf{w}-\textbf{B}\ast\textbf{x}-\textbf{C}\ast\textbf{y}-\textbf{D}\ast\textbf{z}) + \nonumber \\ 
 &\textit{i}(\textbf{A}\ast\textbf{x}+\textbf{B}\ast\textbf{w}+\textbf{C}\ast\textbf{z}-\textbf{D}\ast\textbf{y}) + \nonumber \\
 &\textit{j}(\textbf{A}\ast\textbf{y}-\textbf{B}\ast\textbf{z}+\textbf{C}\ast\textbf{w}+\textbf{D}\ast\textbf{x}) + \nonumber \\
 &\textit{k}(\textbf{A}\ast\textbf{z}+\textbf{B}\ast\textbf{y}-\textbf{C}\ast\textbf{x}+\textbf{D}\ast\textbf{w}).
-\label{eq:convolve1}
 \end{align}
 Using a matrix to represent the components of the convolution we have:
 \begin{equation}
@@ -204,9 +204,22 @@ Using a matrix to represent the components of the convolution we have:
  \textbf{y} \\
  \textbf{z}
 \end{bmatrix}
-\label{eq:}
+\label{eq:qconvolve2}
 \end{equation}
-An example is shown in Fig.~\ref{f:quatconv} where one can see how quaternion convolution forces a linear depthwise mixture of the channels. This is similar to a mixture of standard convolution and depthwise separable convolution from \cite{chollet2016xception}. This reuse of filters on every layer and combination may help extract texture information across channels as seen in \cite{shi2007quaternion}.
+
+An example is shown in Fig.~\ref{f:quatconv}, which is useful to visualize one of the main motivational factors of quaternions for CNNs.
+Notice that the result of the quaternion convolution produces a unique linear combination of each axis per the result of a single axis.
+This comes from the structure of quaternion multiplication and is forcing each axis of the kernel to interact with each axis of the image.
+Real-valued convolution simply multiplies each channel of the kernel with the corresponding channel of the image.
+The quaternion convolution is similar to a mixture of standard convolution and depthwise separable convolution from \cite{chollet2016xception}. 
+Depthwise separable convolution is where first a flat convolution kernel (no depth to match the depth of the feature image) is applied separately to each feature map.
+This is only giving spatial context on each feature map individually.
+Then a $1\times1$ convolution is applied to the results of the previous operation to get a linear interaction of the feature maps, projecting them into a new feature map space.
+
+The quaternion network's reuse of filters on every axis and combination may help extract texture information across channels as seen in \cite{shi2007quaternion}.
+One can think in terms of a RGB image where the greyscale of the image can be the real axis and the RGB channels individually can be the $i, j, k$ axes.
+Then a quaternion kernel convolved against this quaternion image will view the colors as a single entity, unlike standard real-valued convolution.
+Since a quaternion can be thought of as a vector, the quaternion kernels and feature maps can be thought of as vectors as well.
 
 \begin{figure*}
 	\centering
@@ -234,7 +247,7 @@ Now our whitening is accomplished by multiplying the \textbf{0}-centered data ($
 \label{eq:white4d}
 \end{equation}
 where \textbf{W} is one of the matrices from the Cholesky decomposition of $\textbf{V}^{-1}$ where \textbf{V} is the covariance matrix given by:
-\begin{align}
+\begin{align*}
 \textbf{V}
 =&
 \begin{bmatrix}
@@ -242,38 +255,10 @@ where \textbf{W} is one of the matrices from the Cholesky decomposition of $\tex
  V_{ir} & V_{ii} & V_{ij} & V_{ik} \\
  V_{jr} & V_{ji} & V_{jj} & V_{jk} \\
  V_{kr} & V_{ki} & V_{kj} & V_{kk}
-\end{bmatrix} \nonumber \\
-=&~~  \left[ 
-\begin{matrix*}[l]
-\mbox{Cov}(\mathscr{R}\{\textbf{x}\}, \mathscr{R}\{\textbf{x}\}) \\
-\mbox{Cov}(\mathscr{I}\{\textbf{x}\}, \mathscr{R}\{\textbf{x}\}) \\
-\mbox{Cov}(\mathscr{J}\{\textbf{x}\}, \mathscr{R}\{\textbf{x}\}) \\
-\mbox{Cov}(\mathscr{K}\{\textbf{x}\}, \mathscr{R}\{\textbf{x}\}) \\
-\end{matrix*} \right. \nonumber \\ 
-&~~~~~~
-\begin{matrix*}[l]
-\mbox{Cov}(\mathscr{R}\{\textbf{x}\}, \mathscr{I}\{\textbf{x}\}) \\
-\mbox{Cov}(\mathscr{I}\{\textbf{x}\}, \mathscr{I}\{\textbf{x}\}) \\
-\mbox{Cov}(\mathscr{J}\{\textbf{x}\}, \mathscr{I}\{\textbf{x}\}) \\
-\mbox{Cov}(\mathscr{K}\{\textbf{x}\}, \mathscr{I}\{\textbf{x}\}) \\
-\end{matrix*} \nonumber \\
-&~~~~~~~
-\begin{matrix*}[l]
-\mbox{Cov}(\mathscr{R}\{\textbf{x}\}, \mathscr{J}\{\textbf{x}\}) \\
-\mbox{Cov}(\mathscr{I}\{\textbf{x}\}, \mathscr{J}\{\textbf{x}\}) \\
-\mbox{Cov}(\mathscr{J}\{\textbf{x}\}, \mathscr{J}\{\textbf{x}\}) \\
-\mbox{Cov}(\mathscr{K}\{\textbf{x}\}, \mathscr{J}\{\textbf{x}\}) \\
-\end{matrix*} \nonumber \\
-&~~~~~~~~ \left.
-\begin{matrix*}[l]
-\mbox{Cov}(\mathscr{R}\{\textbf{x}\}, \mathscr{K}\{\textbf{x}\}) \\
-\mbox{Cov}(\mathscr{I}\{\textbf{x}\}, \mathscr{K}\{\textbf{x}\}) \\
-\mbox{Cov}(\mathscr{J}\{\textbf{x}\}, \mathscr{K}\{\textbf{x}\}) \\
-\mbox{Cov}(\mathscr{K}\{\textbf{x}\}, \mathscr{K}\{\textbf{x}\}) \\
-\end{matrix*}  \right]
+\end{bmatrix}
 \label{eq:V4d}
-\end{align}
-where Cov$(\cdot)$ is the covariance and $\mathscr{R}\{x\}$, $\mathscr{I}\{x\}$, $\mathscr{J}\{x\}$, and $\mathscr{K}\{x\}$ are the real, $i$, $j$, and $k$ components of $\textbf{x}$ respectively.
+\end{align*}
+where each $V$ is the covariance between its two subscripts which represent the real, $i$, $j$, and $k$ components of $\textbf{x}$ respectively.
 
 Real-valued batch normalization also uses two learned parameters, $\beta$ and $\gamma$. 
 Our shift parameter {\boldmath$\beta$} must shift a quaternion value so it is a quaternion value itself with real, $i$, $j$, and $k$ as learnable components. 
@@ -308,7 +293,7 @@ In this work we derive our quaternion weight initialization using the same proce
 To begin we find the variance of a quaternion weight:
 \begin{align}
 W = &~|W|e^{(\mbox{cos}\phi_1 \textit{i} + \mbox{cos}\phi_2 \textit{j} + \mbox{cos}\phi_3 \textit{k})\theta} \nonumber \\
-= &~\mathscr{R}\{W\} + i~\mathscr{I}\{W\} + j~\mathscr{J}\{W\} + k~\mathscr{K}\{W\}.
+= &~\mathscr{R}\{W\} + \mathscr{I}\{W\} + \mathscr{J}\{W\} + \mathscr{K}\{W\}.
 \label{eq:quaternion_weight}
 \end{align}
 where $|W|$ is the magnitude, $\theta$ and $\phi$ are angle arguments, and $\mbox{cos}^2\phi_1 + \mbox{cos}^2\phi_2 + \mbox{cos}^2\phi_3 = 1$ \cite{turner2002}.
@@ -343,13 +328,20 @@ The angle components are initialized using the uniform distribution between $-\p
 
 
 \section{Experimental Results}
-Our experiments covered image classification using both the CIFAR-10 and CIFAR-100 benchmarks and image segmentation using the KITTI Road Estimation benchmark.
+Our experiments covered image classification using both the CIFAR-10 and CIFAR-100 benchmarks \cite{krizhevsky2009learning} and image segmentation using the KITTI Road Estimation benchmark \cite{Fritsch2013ITSC}. 
+The CIFAR datasets are $32\times32$ color images of 10 and 100 classes receptively.
+Each image only contains one class and labels are provided.
+The KITTI dataset is large color images of varying sizes depicting roads as seen from a driver's perspective.
+Each image has a corresponding label image in which each pixel is an integer value relating to a class of road or not road.
+We chose CIFAR because it is a extremely common benchmark task making it a good sanity check.
+The KITTI dataset was chosen because it is a fairly common, color segmentation benchmark and has binary classes which made it a simple test.
+All training was done on a single Nvidia 980Ti.
 
 \subsection{Classification}
 We use the same architecture as the large model in \cite{trabelsi2017deep}, which is a 110 layer Residual model similar to the one in \cite{he2016deep}.
 There is one difference between the real-valued network and the ones used for both the complex and hyper-complex valued networks.
-Because the datasets are all real-valued, the network must learn the imaginary or quaternion components.
-We use the same technique as \cite{trabelsi2017deep} where there is an additional block immediately after the input which will learn the hyper-complex components
+Because the datasets are all real-valued the network must learn the imaginary or quaternion components.
+We use the same technique as \cite{trabelsi2017deep} where there is an additional residual block immediately after the input which will learn the hyper-complex components
 \begin{equation*}
 BN \rightarrow ReLU \rightarrow Conv \rightarrow BN \rightarrow ReLU \rightarrow Conv.
 \end{equation*}
@@ -359,56 +351,68 @@ With this choice it is not necessary to use the above block after input to learn
 
 To maintain the same parameter budget among the three network types we divided the number of filters per layer of the real network by a factor of two for the complex, and by a factor of four for the quaternion.
 
-The architecture consists of 3 stages of repeating residual blocks where at the end of each stage the images are downsized by strided convolutions.
+The architecture for all models consists of 3 stages of repeating residual blocks,
+\begin{equation*}
+BN \rightarrow ReLU \rightarrow Conv \rightarrow BN \rightarrow ReLU \rightarrow Conv,
+\end{equation*}
+where at the end of each stage the images are downsized by a strided convolution.
+For these classification experiments we ran a shallow network where the stages contained 2, 1, and 1 residual blocks respectively and a deep network where the stages contained 10, 9, and 9 residual blocks respectively.
 Each stage also doubles the previous stage's number of convolution kernels.
-The last layers are a global average pooling layer followed by a single fully connected layer with a softmax function used to classify the input as either one of the 10 classes in CIFAR-10 or one of the 100 classes in CIFAR-100.
+For example the real model has 32 kernels in the first stage, 64 in the second, and finally 124 in the last.
+The last two layers are a global average pooling layer followed by a single fully connected layer with a softmax function used to classify the input as either one of the 10 classes in CIFAR-10 or one of the 100 classes in CIFAR-100.
 
 We also followed their training procedure of using the backpropagation algorithm with Stochastic Gradient Descent with Nesterov momentum \cite{nesterov1983method} set at 0.9.
-The norm of the gradients are clipped to 1 and a custom learning rate scheduler is used.
-The learning scheduler is the same used in \cite{trabelsi2017deep} for a direct comparison in performance.
-The learning rate is initially set to 0.01 for the first 10 epochs and then set it to 0.1 from epoch 10-100 and then cut by a factor of 10 at epochs 120 and 150.
-Table~\ref{t:results1} presents our results along side the real and complex valued networks.
-Our quaternion model outperforms the real and complex networks on both datasets on a smaller parameter budget.
+The norm of the gradients were clipped to 1 and a custom learning rate scheduler was used.
+The learning scheduler was the same used in \cite{trabelsi2017deep} for a direct comparison in performance.
+The learning rate was initially set to 0.01 for the first 10 epochs and then set to 0.1 from epoch 11-100 and then cut by a factor of 10 at epochs 120 and 150.
+Table~\ref{t:results1} presents our results alongside the real and complex valued networks.
+Our quaternion models outperform the real and complex networks on both datasets with a smaller parameter count.
+The quaternion models do take roughly 50\% longer to train due to the computationally intense operations of quaternion batch normalization.
 
 \begin{table}[h]
 	\centering
-		\begin{tabular}{l c c}
+		\begin{tabular}{l c c c c}
 			\hline
-			Architecture & CIFAR-10 & CIFAR-100 \\
+			Architecture & Params & CIFAR-10 & CIFAR-100 \\
 			\hline
-			\cite{he2016deep} Real & 6.37 & - \\
-			\cite{trabelsi2017deep} Complex & 5.60 & 27.09 \\
-			Quaternion & \textbf{5.44} & \textbf{26.01}
+			Shallow Real & 508,932 & 6.82 & 32.02 \\
+			Shallow Complex & 257,412 & 6.91 & 31.65 \\
+			Shallow Quaternion & 133,560 & \textbf{6.77} & \textbf{30.59} \\
+			\hline
+			Deep Real & 3,619,844 & 6.37 & 28.07 \\
+			Deep Complex & 1,823,620 & 5.60 & 27.09 \\
+			Deep Quaternion & 932,792 & \textbf{5.44} & \textbf{26.01} \\
+			\hline
 		\end{tabular}
-	\caption{Classification error on CIFAR-10 and CIFAR-100. Note that \cite{he2016deep} is a 110 layer residual network, \cite{trabelsi2017deep} is 118 layer complex network with the same design as the prior except with additional initial layers to extract complex mappings.}
+	\caption{Classification error on CIFAR-10 and CIFAR-100. Params is the total number of parameters.}
 	\label{t:results1}
 \end{table}
 
 \subsection{Segmentation}
-For this experiment we used the same model as the above, but cut the number of residual blocks out of the model for memory reasons given that the KITTI data is large color images.
-The 110 layer model has 10, 9, and 9 residual blocks in the 3 stages talked about above, while this model has 2, 1, and 1 and does not perform any strided convolutions.
-This gives a total of 38 layers.
+For this experiment we used the same model as the above, but cut the number of residual blocks out of the model for memory reasons given that the KITTI data is large color images about $1200 \times 375$ pixels in size.
+We only use one model due to resource limitations for this experiment.
+It is the same as the small model from the classification experiments which has 2, 1, and 1 blocks at the three stages, but it does not perform any strided convolutions.
+It also does not have the global average pooling layer or the fully connected layer.
 
 The last layer is a $1 \times 1$ convolution with a sigmoid output so we are getting a heatmap prediction the same size as the input.
 The training procedure is also as above, but the learning rate is scheduled differently.
-Here we begin at 0.01 for the first 10 epochs and then set it to 0.1 from epoch 10-50 and then cut by a factor of 10 at 100 and 150.
+Here we begin at 0.01 for the first 10 epochs and then set it to 0.1 from epoch 11-50 and then cut by a factor of 10 at 100 and 150.
 Table~\ref{t:results2} presents our results along side the real and complex valued networks where we used Intersection over Union (IOU) for performance measure.
-Quaternion outperformed the other two by a larger margin compared to the classification tasks.
+Quaternion outperformed the other two by a larger margin compared to the classification tasks and again, with a smaller parameter count.
 
 \begin{table}[h]
 	\centering
 		\begin{tabular}{l c c}
 			\hline
-			Architecture & KITTI \\
+			Architecture & Params & KITTI \\
 			\hline
-			Real & 0.747 \\
-			Complex & 0.769 \\
-			Quaternion & \textbf{0.827}
+			Real & 507,029 & 0.747 \\
+			Complex & 254,037 & 0.769 \\
+			Quaternion & 128,701 & \textbf{0.827}
 		\end{tabular}
 	\caption{IOU on KITTI Road Estimation benchmark.}
 	\label{t:results2}
 \end{table}
-
 
 \section{Conclusions}
 We have extended upon work looking into complex valued networks by exploring quaternion values.

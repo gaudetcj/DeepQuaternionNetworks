@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6500) (preloaded format=pdflatex 2018.1.27)  6 APR 2018 11:47
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6500) (preloaded format=pdflatex 2018.1.27)  30 APR 2018 20:28
 entering extended mode
 **./DeepQuaternionNets.tex
 (DeepQuaternionNets.tex
@@ -447,33 +447,23 @@ Overfull \hbox (6.60146pt too wide) in paragraph at lines 66--66
 <quatconv.png, id=18, 2091.815pt x 2509.375pt>
 File: quatconv.png Graphic file (type png)
 <use quatconv.png>
-Package pdftex.def Info: quatconv.png  used on input line 213.
+Package pdftex.def Info: quatconv.png  used on input line 226.
 (pdftex.def)             Requested size: 516.0pt x 618.99501pt.
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [3] [4 <./quatconv.png>]
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-[5] (DeepQuaternionNets.bbl)
-Overfull \hbox (11.75749pt too wide) detected at line 436
+ [3] [4 <./quatconv.png>] [5] (DeepQuaternionNets.bbl)
+Overfull \hbox (11.75749pt too wide) detected at line 440
 []
  []
 
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [6]
+[6]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
-Underfull \hbox (badness 7116) in paragraph at lines 509--512
+Underfull \hbox (badness 7116) in paragraph at lines 513--516
 \OT1/ptm/m/n/10 Let $[]$ be the length of $[]$, which means $[] \OT1/cmr/m/n/10 =
  []
 
 
-Overfull \hbox (31.63963pt too wide) detected at line 526
+Overfull \hbox (31.63963pt too wide) detected at line 530
 []
  []
 
@@ -494,12 +484,12 @@ Before submitting the final camera ready copy, remember to:
 ] (DeepQuaternionNets.aux) ) 
 Here is how much of TeX's memory you used:
  4571 strings out of 493307
- 70072 string characters out of 3136230
- 159179 words of memory out of 3000000
+ 70101 string characters out of 3136230
+ 159170 words of memory out of 3000000
  8027 multiletter control sequences out of 15000+200000
  50881 words of font info for 107 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 41i,16n,26p,454b,252s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 41i,14n,26p,360b,252s stack positions out of 5000i,500n,10000p,200000b,50000s
 {C:/Program Files (x86)/MiKTeX 2.9/fonts/enc/dvips/base/8r.enc}<C:/Program Files (x86)/MiKTe
 X 2.9/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmex10
 .pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fon
@@ -512,7 +502,7 @@ X 2.9/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Program Files (x86)/MiKTeX 2.
 bm10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/rsfs/rsfs10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/
 type1/urw/times/utmb8a.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/urw/times/utmbi8a.pfb><C:/Program Files (x86)/
 MiKTeX 2.9/fonts/type1/urw/times/utmr8a.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/urw/times/utmri8a.pfb>
-Output written on DeepQuaternionNets.pdf (8 pages, 355522 bytes).
+Output written on DeepQuaternionNets.pdf (8 pages, 359449 bytes).
 PDF statistics:
  105 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)

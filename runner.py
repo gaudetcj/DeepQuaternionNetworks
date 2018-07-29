@@ -47,9 +47,13 @@ def runner(task, mode, num_blocks, start_filters, dropout, batch_size, num_epoch
 
     if task == 'classification':
         model = model_c(params)
+        print()
+        print(model.count_params())
         train_c(params, model)
     elif task == 'segmentation':
         model = model_s(params)
+        print()
+        print(model.count_params())
         train_s(params, model)
     else:
         print("Invalid task chosen...")

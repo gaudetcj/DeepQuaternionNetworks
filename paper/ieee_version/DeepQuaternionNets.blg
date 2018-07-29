@@ -1,7 +1,24 @@
 This is BibTeX, Version 0.99dThe top-level auxiliary file: DeepQuaternionNets.aux
 The style file: ieeetr.bst
 Database file #1: bib.bib
+Repeated entry---line 659 of file bib.bib
+ : @article{clevert2015fast
+ :                         ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 692 of file bib.bib
+ : @inproceedings{ioffe2015batch
+ :                              ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 853 of file bib.bib
+ : @inproceedings{he2015delving
+ :                             ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 861 of file bib.bib
+ : @inproceedings{nair2010rectified
+ :                                 ,
+I'm skipping whatever remains of this entry
 Warning--empty booktitle in turner2002
+Warning--empty journal in krizhevsky2009learning
 Warning--empty booktitle in nesterov1983method
 Warning--empty year in nesterov1983method
-(There were 3 warnings)
+(There were 4 error messages)

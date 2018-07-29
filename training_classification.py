@@ -113,7 +113,7 @@ def schedule(epoch):
         if epoch == 0:
             L.getLogger("train").info("Current learning rate value is "+str(lrate))
     elif epoch >=  10 and epoch < 100:
-        lrate = 0.1
+        lrate = 0.01
         if epoch == 10:
             L.getLogger("train").info("Current learning rate value is "+str(lrate))
     elif epoch >= 100 and epoch < 120:
@@ -153,16 +153,13 @@ def learnVectorBlock(I, featmaps, filter_size, act, bnArgs):
     return O
 
 
-def getResidualBlock(I, mode, filter_size, featmaps, shortcut, convArgs, bnArgs):
+def getResidualBlock(I, mode, filter_size, featmaps, activation, shortcut, convArgs, bnArgs):
     """Get residual block."""
-    
-    activation = params.act
-    drop_prob = params.dropout
     
     if mode == "real":
         O = BatchNormalization(**bnArgs)(I)
     elif mode == "complex":
-        O = ComplexBN(**bnArgs)(I)
+        O = ComplexBatchNormalization(**bnArgs)(I)
     elif mode == "quaternion":
         O = QuaternionBatchNormalization(**bnArgs)(I)
     O = Activation(activation)(O)
@@ -187,7 +184,7 @@ def getResidualBlock(I, mode, filter_size, featmaps, shortcut, convArgs, bnArgs)
         O = Activation(activation)(O)
         O = Conv2D(featmaps, filter_size, **convArgs)(O)
     elif mode == "complex":
-        O = ComplexBN(**bnArgs)(O)
+        O = ComplexBatchNormalization(**bnArgs)(O)
         O = Activation(activation)(O)
         O = ComplexConv2D(featmaps, filter_size, **convArgs)(O)
     elif mode == "quaternion":
@@ -203,15 +200,15 @@ def getResidualBlock(I, mode, filter_size, featmaps, shortcut, convArgs, bnArgs)
             O = Concatenate(1)([X, O])
         elif mode == "complex":
             X = ComplexConv2D(featmaps, (1, 1), strides = (2, 2), **convArgs)(I)
-            O_real = Concatenate(1)([GetReal(X), GetReal(O)])
-            O_imag = Concatenate(1)([GetImag(X), GetImag(O)])
+            O_real = Concatenate(1)([GetReal()(X), GetReal()(O)])
+            O_imag = Concatenate(1)([GetImag()(X), GetImag()(O)])
             O = Concatenate(1)([O_real, O_imag])
         elif mode == "quaternion":
             X = QuaternionConv2D(featmaps, (1, 1), strides = (2, 2), **convArgs)(I)
-            O_r = Concatenate(1)([GetR(X), GetR(O)])
-            O_i = Concatenate(1)([GetI(X), GetI(O)])
-            O_j = Concatenate(1)([GetJ(X), GetJ(O)])
-            O_k = Concatenate(1)([GetK(X), GetK(O)])
+            O_r = Concatenate(1)([GetR()(X), GetR()(O)])
+            O_i = Concatenate(1)([GetI()(X), GetI()(O)])
+            O_j = Concatenate(1)([GetJ()(X), GetJ()(O)])
+            O_k = Concatenate(1)([GetK()(X), GetK()(O)])
             O = Concatenate(1)([O_r, O_i, O_j, O_k])
 
     return O
@@ -256,24 +253,24 @@ def getModel(params):
         O = BatchNormalization(**bnArgs)(O)
     elif mode == "complex":
         O = ComplexConv2D(sf, filsize, **convArgs)(O)
-        O = ComplexBN(**bnArgs)(O)
+        O = ComplexBatchNormalization(**bnArgs)(O)
     else:
         O = QuaternionConv2D(sf, filsize, **convArgs)(O)
         O = QuaternionBatchNormalization(**bnArgs)(O)
     O = Activation(activation)(O)
 
-    for i in xrange(n):
-        O = getResidualBlock(O, mode, filsize, sf, 'regular', convArgs, bnArgs)
+    for i in range(n):
+        O = getResidualBlock(O, mode, filsize, sf, activation, 'regular', convArgs, bnArgs)
 
-    O = getResidualBlock(O, mode, filsize, sf, 'projection', convArgs, bnArgs)
+    O = getResidualBlock(O, mode, filsize, sf, activation, 'projection', convArgs, bnArgs)
 
-    for i in xrange(n-1):
-        O = getResidualBlock(O, mode, filsize, sf*2, 'regular', convArgs, bnArgs)
+    for i in range(n-1):
+        O = getResidualBlock(O, mode, filsize, sf*2, activation, 'regular', convArgs, bnArgs)
 
-    O = getResidualBlock(O, mode, filsize, sf*2, 'projection', convArgs, bnArgs)
+    O = getResidualBlock(O, mode, filsize, sf*2, activation, 'projection', convArgs, bnArgs)
 
-    for i in xrange(n-1):
-        O = getResidualBlock(O, mode, filsize, sf*4, 'regular', convArgs, bnArgs)
+    for i in range(n-1):
+        O = getResidualBlock(O, mode, filsize, sf*4, activation, 'regular', convArgs, bnArgs)
 
     O = AveragePooling2D(pool_size=(8, 8))(O)
 

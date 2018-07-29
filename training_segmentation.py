@@ -278,4 +278,5 @@ if __name__ == '__main__':
     
     params = Params(param_dict)
     model = getModel(params)
+    print(model.count_params())
     train(params, model)
