@@ -27,7 +27,7 @@ from keras.regularizers import l2
 from keras.utils.np_utils import to_categorical
 import keras.backend as K
 K.set_image_data_format('channels_first')
-K.set_image_dim_ordering('th')
+K.common.set_image_dim_ordering('th')
 
 
 # Callbacks:
